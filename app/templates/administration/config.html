@@ -1,0 +1,79 @@
+{% extends "main.html" %} {% set active_page = "administration" %} {% block content %}
+<link rel="stylesheet" href="../../static/css/form.css">
+
+
+<link href="https://fonts.googleapis.com/css?family=Raleway" rel="stylesheet">
+<style>
+</style>
+<div class="tables">
+    <h1>Manage System Emails</h1>
+    
+  <br>
+  <table class="table" id="table">
+    <thead>
+      <tr>
+        <th>#</th>
+        <th>Key</th>
+        <th>Description</th>
+        <th>Subect</th>
+        <th>Content</th>      
+        <th></th>
+        
+      </tr>
+    </thead>
+    <tbody>
+            {% for row in email %}
+            <tr>
+              <td>{{row['ID']}}</td>
+              <td>{{row['key']}}</td>
+              <td>{{row['description']}}</td>   
+              <td>{{row['subject']|safe}}</td>
+              
+              <td>{{row['content']|safe}}</td>
+              <td>
+               <a href="/administration/editContent%{{row['key']}}%email"> <button  class="btn" >Edit</button></a>
+              </td>
+            
+            </tr>
+            {% endfor %}
+          </tbody>
+    </table>
+</div>
+
+  <div class="tables">
+      <h1>Manage System Content</h1>
+      
+    <br>
+    <table class="table" id="table2">
+      <thead>
+        <tr>
+          <th>#</th>
+          <th>Key</th>
+          <th>Description</th>
+          <th>Content</th>      
+          <th></th>
+          
+        </tr>
+      </thead>
+      <tbody>
+              {% for x in content %}
+              <tr>
+                <td>{{x['ID']}}</td>
+                <td>{{x['key']}}</td>
+                <td>{{x['description']}}</td>   
+                
+                <td>{{x['content']|safe}}</td>
+                <td>
+                    <a href="/administration/editContent%{{x['key']}}%content"> <button  class="btn" >Edit</button></a>
+                    
+                </td>
+              
+              </tr>
+              {% endfor %}
+            </tbody>
+      </table>
+    
+
+  
+  
+{% endblock %}

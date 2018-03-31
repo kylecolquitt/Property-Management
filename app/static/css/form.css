@@ -1,0 +1,64 @@
+.form * {
+    box-sizing: border-box;
+}
+
+
+ 
+.form #regForm {
+    background-color: #ffffff;
+    /* margin: 100px auto; */
+    font-family: Raleway;
+    padding: 40px;
+    width: 90%;
+    min-width: 300px;
+}
+
+.form h1 {
+    text-align: center;
+}
+
+.form select {
+    padding: 13px;
+    width: 100%;
+    font-size: 17px;
+    font-family: Raleway;
+    border: 1px solid #aaaaaa;
+}
+/* 
+.form input, .form textarea {
+    padding: 10px;
+    width: 100%;
+    font-size: 17px;
+    font-family: Raleway;
+    border: 1px solid #aaaaaa;
+} */
+
+/* .form input[type="checkbox"]{
+    width:20px; 
+} */
+
+
+.form button {
+    background-color: #4CAF50;
+    color: #ffffff;
+    border: none;
+    padding: 10px 20px;
+    font-size: 17px;
+    font-family: Raleway;
+    cursor: pointer;
+}
+
+.form button:hover {
+    opacity: 0.8;
+}
+
+.form #prevBtn {
+    background-color: #bbbbbb;
+}
+
+
+
+.full{
+    padding-left:16px; 
+    padding-right:16px;
+}

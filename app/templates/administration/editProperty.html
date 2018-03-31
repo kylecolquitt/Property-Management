@@ -1,0 +1,64 @@
+{% extends "main.html" %} {% set active_page = "administration" %} {% block content %}
+<link rel="stylesheet" href="../../static/css/form.css">
+
+
+<link href="https://fonts.googleapis.com/css?family=Raleway" rel="stylesheet">
+<style>
+</style>
+<script>
+</script>
+
+<div style="margin:30px; margin-right:auto; margin-left:auto;width:40%;">
+        <form method="POST">
+                {{ form.csrf_token }}
+    
+                <div class="form-group">
+                  <label>Address
+                    <small style="color:red;"> (required)</small>
+                  </label>
+                  {{form.address(class="form-control",required=required)}}
+                </div>
+                <div class="form-group">
+                  <label>City
+                    <small style="color:red;"> (required)</small>
+                  </label>
+                  {{form.city(class="form-control",required=required)}}
+                </div>
+    
+                <div class="form-group">
+                  <label>State
+                    <small style="color:red;"> (required)</small>
+    
+                  </label>
+                  {{form.state(class="form-control",required=required)}}
+                </div>
+                <div class="form-group">
+                  <label>Zip Code
+                    <small style="color:red;"> (required)</small>
+    
+                  </label>
+                  {{form.zip(class="form-control",required=required)}}
+                </div>
+                <div class="form-group">
+                    <label>Type
+                      <small style="color:red;"> (required)</small>
+      
+                    </label>
+                    {{form.p_type(class="form-control",required=required)}}
+                  </div>
+                <div class="form-group">
+                  <label>Description
+                    <small style="color:red;"> (required)</small>
+    
+                  </label>
+                  {{form.description(class="form-control",required=required)}}
+                </div>
+    
+                {{form.submit(class="btn btn-primary btn-block")}}
+              </form>
+              <br>
+              <a href="/administration/properties">Cancel</a>
+              
+       </div>
+
+{% endblock %}

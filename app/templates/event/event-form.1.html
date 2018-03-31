@@ -1,0 +1,91 @@
+{% extends "main.html" %} {% set active_page = "event-request" %} {% block content %}
+<link rel="stylesheet" href="../../static/css/form.css">
+
+
+<link href="https://fonts.googleapis.com/css?family=Raleway" rel="stylesheet">
+<style>
+</style>
+<script>
+</script>
+
+<div class="form col-sm-7">
+    <form id="regForm" method="POST">
+        {{ form.csrf_token }}
+
+        <div class="form-group">
+            <label>First Name
+                <small style="color:red;"> (required)</small>
+            </label>
+            {{form.first_name(class="form-control",required=required)}}
+        </div>
+        <div class="form-group">
+            <label>Last Name
+                <small style="color:red;"> (required)</small>
+            </label>
+            {{form.last_name(class="form-control",required=required)}}
+        </div>
+
+        <div class="form-group">
+            <label>Email</label>
+            {{form.email(class="form-control",required=required)}}
+        </div>
+
+        <div class="form-group">
+            <label>Phone Number</label>
+            {{form.phone(class="form-control")}} </div>
+        <div class="form-group">
+
+            <label>Company or Organization
+                <small style="color:red;"> (required)</small>
+            </label>
+            {{form.org(class="form-control",required=required)}} </div>
+            <div class="form-group">
+                    <label>Location
+                        <small style="color:red;"> (required)</small>
+                    </label>
+                    {{form.location(class="form-control" ,style="height:45px; font-size:14px; ",required=required)}} </div>
+                    <div class="form-group">
+                            <label>Event Type
+                                <small style="color:red;"> (required)</small>
+                            </label>
+                            {{form.event_type(class="form-control" ,style="height:45px; font-size:14px; ",required=required)}} </div>
+        <div class="form-group">
+            <label>Comments (What type of event are you interested in, etc)
+                <small style="color:red;"> (required)</small>
+            </label>
+            {{form.description(class="form-control",required=required)}} </div>
+            
+
+
+
+        <fieldset class="form-group">
+            <label>Preferred Method of Contact
+                <small style="color:red;"> (required)</small>
+            </label>
+            <br> {% for subfield in form.communication %}
+            <tr>
+                <td>{{ subfield(class="w3-radio") }}</td>
+                <td>{{ subfield.label }}</td>
+            </tr>
+            {% endfor %}
+
+        </fieldset>
+
+        {{form.submit(class="btn btn-primary btn-block")}}
+    </form>
+</div>
+<div class="col-sm-5 right-nav">
+    <div style="margin-top:100px;">
+        <h1>Group Rates</h1>
+        Because our ticket is discounted to just $2.00 per person we cannot offer a group discount. Our prices are significantly
+        lower than the industry average, and we cannot lower them further. 
+        <br><br><h1>Rentals</h1> Theater rentals are possible for private
+        showings. We have 2 rates based off the number of people in your group, under 100 and over 100. If you are interested
+        in more information on group event please contact us by filling out the form below. Please include an email and or
+        phone number that we can respond to you at.
+
+    </div>
+</div>
+
+
+{% endblock %}

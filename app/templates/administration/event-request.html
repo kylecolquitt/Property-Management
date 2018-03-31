@@ -1,0 +1,214 @@
+{% extends "main.html" %} {% set active_page = "administration" %} {% block content %}
+<link rel="stylesheet" href="../../static/css/form.css">
+
+
+<link href="https://fonts.googleapis.com/css?family=Raleway" rel="stylesheet">
+<style>
+</style>
+
+<script>
+  function sendId(id) {
+    $(".modal-body .id-field").val(id);
+  }
+
+</script>
+<div class="tables">
+    <h1>Manage Event Requests</h1>
+    
+  <br>
+  <table class="table" id="table">
+    <thead>
+      <tr>
+        <th>#</th>
+        <th>First Name</th>
+        <th>Last Name</th>
+        <th>Email</th>
+        <th>Phone</th>
+        <th>Property</th>
+        <th>Type</th>
+        <th>Event Date</th>        
+        
+        <th>Invoice#</th>
+        <th>Receipt#</th>
+        <th>Comments</th>
+
+        <th></th>
+        
+      </tr>
+    </thead>
+    <tbody>
+      {% for row in request %}
+      <tr>
+        <td>{{row['ID']}}</td>
+        <td>{{row['FirstName']}}</td>
+        <td>{{row['LastName']}}</td>
+        <td>{{row['Email']}}</td>
+        <td>{{row['Phone']}}</td>
+        <td>{{row['Property']}}</td>
+        <td>{{row['Type']}}</td>  
+        <td>{{row['date']}}</td>        
+        
+        <td>{{row['Invoice']}}</td>                
+        <td>{{row['Reciept']}}</td>
+        <td>{{row['Description']}}</td>
+        <td>
+          <button  class="btn" data-toggle="modal" data-target="#eventForm" onclick="sendId({{row['ID']}})">Edit</button>
+        </td>
+        
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+  <script>
+     $(document).ready(function() {
+      $('#table').DataTable( {
+          "order": [[ 0, "desc" ]]
+      } );
+  } );</script>
+</div>
+
+
+<div class="modal fade" id="eventForm" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Add Property</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+            <p id="demo"></p>
+            
+            
+            <form id="regForm" method="POST">
+                {{ form.csrf_token }}
+                <div class="form-group">
+                    
+                  {{form.id(class="form-control id-field", required=required)}}
+                </div>
+                <div class="form-group">
+                    <label>Invoice
+                      </label>
+                    {{form.invoice(class="form-control", required=required)}}
+                  </div>
+                <div class="form-group">
+                    <label>Reciept
+                      </label>
+                  {{form.receipt(class="form-control", required=required)}}
+                </div>
+                <div class="form-group">
+                    <label>Date of Event
+                      </label>
+                  {{form.eventdate(class="form-control", required=required)}}
+                </div>
+                
+      
+                {{form.submit(class="btn btn-primary btn-block")}}
+              </form>
+              </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-primary" data-dismiss="modal">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <style>
+      
+        #show{
+          margin-top:30px;
+          margin-bottom:30px;
+      
+          width:100%;
+          height:50px;
+        }
+        .archive{
+          width:100%;
+        }
+      </style>
+      
+      
+      <div class="archive" >
+      <button id="show"onclick="myFunction()" class="btn btn-primary btn-block">Show Archived Requests <i class="fa fa-arrow-down"></i></button>
+      <script>
+        function myFunction() {
+          var x = document.getElementById("myDIV");
+          var element = document.getElementById("show");
+      
+          if (x.style.display === "none") {
+            element.className = 'btn btn-success btn-block';
+            element.innerHTML = "Hide Archived Requests<i class='fa fa-arrow-up'></i>";
+      
+              x.style.display = "block";
+          } else {
+            element.className = 'btn btn-primary btn-block';
+            
+            element.innerHTML = "Show Archived Requests<i class='fa fa-arrow-down'></i>" ;
+      
+              x.style.display = "none";
+          }
+      }
+      
+      
+      </script>
+      </div>
+      <div class="tables" style="display:none;" id="myDIV">        
+                <h1>Past Events</h1>
+              
+                <br>
+                <table class="table"  id="table2">
+                    <thead>
+                        <tr>
+                          <th>#</th>
+                          <th>First Name</th>
+                          <th>Last Name</th>
+                          <th>Email</th>
+                          <th>Phone</th>
+                          <th>Property</th>
+                          <th>Type</th>
+                          <th>Event Date</th>        
+                          
+                          <th>Invoice#</th>
+                          <th>Receipt#</th>
+                          <th>Comments</th>
+                  
+                          <th></th>
+                          
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {% for row in past %}
+                        <tr>
+                          <td>{{row['ID']}}</td>
+                          <td>{{row['FirstName']}}</td>
+                          <td>{{row['LastName']}}</td>
+                          <td>{{row['Email']}}</td>
+                          <td>{{row['Phone']}}</td>
+                          <td>{{row['Property']}}</td>
+                          <td>{{row['Type']}}</td>  
+                          <td>{{row['date']}}</td>        
+                          
+                          <td>{{row['Invoice']}}</td>                
+                          <td>{{row['Reciept']}}</td>
+                          <td>{{row['Description']}}</td>
+                          <td>
+                            <button  class="btn" data-toggle="modal" data-target="#eventForm" onclick="sendId({{row['ID']}})">Edit</button>
+                          </td>
+                         
+                        </tr>
+                        {% endfor %}
+                      </tbody>
+                </table>
+                <script>
+                $(document).ready(function() {
+                  $('#table2').DataTable( {
+                      "order": [[ 7, "desc" ]]
+                  } );
+              } );</script>
+              </div>
+      
+      
+     
+      
+{% endblock %}

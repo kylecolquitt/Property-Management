@@ -1,0 +1,50 @@
+      {% extends "main.html" %} {% set active_page = "administration" %} {% block content %}
+      <link rel="stylesheet" href="../../static/css/form.css">
+      
+      
+      <link href="https://fonts.googleapis.com/css?family=Raleway" rel="stylesheet">
+      <style>
+      </style>
+
+      <script>
+          console.log('{{type}}')
+
+         
+          $(document).ready(function() { /* code here */ });
+$(function() { /* code here */
+
+
+
+    if ('{{type}}' == 'content'){
+              document.getElementById('subject').readOnly=true;
+          } });
+  // Run code
+
+      </script>
+      <div class="container-fluid bg-grey" style="width:70%;margin-bottom:50px;">
+            
+      <form id="regForm" method="POST">
+        {{ form.csrf_token }}
+        
+        <div class="form-group">
+          {{form.key(class="form-control id-field")}}
+        </div>
+  
+        <div class="form-group">
+                <label>Subject
+                  </label>
+              {{form.subject(class="form-control content-field", required=required)}}
+            </div>
+        <div class="form-group">
+            <label>Content
+              </label>
+          {{form.content(class="form-control content-field",rows='10',required=required)}}
+        </div>
+        
+
+        {{form.submit(class="btn btn-primary btn-block")}}
+      </form>
+      
+        </div>
+        
+      {% endblock %}

@@ -1,0 +1,86 @@
+{% extends "main.html" %} {% set active_page = "administration" %} {% block content %}
+<link rel="stylesheet" href="../../static/css/form.css">
+
+
+<div style="margin:30px; margin-right:auto; margin-left:auto;width:60%;">
+
+    <form class="form-signin" method='POST'>
+        <div class='row'>
+            <div class="form-group col-sm-6">
+                <label>First Name
+                </label>
+                {{form.first_name(class="form-control",required=required)}}
+            </div>
+            <div class="form-group col-sm-6">
+                <label>Last Name
+                </label>
+                {{form.last_name(class="form-control",required=required)}}
+            </div>
+        </div>
+        <div class='row'>
+
+            <div class="form-group col-sm-12">
+                <label>Email
+                </label>
+                {{form.email(class="form-control",required=required)}}
+            </div>
+        </div>
+        <div class='row'>
+
+            <div class="form-group  col-sm-5">
+                <label>Address
+                </label>
+                {{form.address(class="form-control")}}
+            </div>
+            <div class="form-group  col-sm-3">
+                <label>City
+                </label>
+                {{form.city(class="form-control")}}
+            </div>
+            <div class="form-group  col-sm-2">
+                <label>State
+                </label>
+                {{form.state(class="form-control")}}
+            </div>
+            <div class="form-group  col-sm-2">
+                <label>Zip Code
+                </label>
+                {{form.zip(class="form-control", maxlength='5')}}
+            </div>
+        </div>
+        <div class='row'>
+
+
+
+                <div class="form-group col-sm-6">
+                    <label>Organization
+                    </label>
+                    {{form.organization(class="form-control")}}
+                </div>
+                <div class="form-group col-sm-3">
+                    <label>Phone
+                    </label>
+                    {{form.phone(class="form-control")}}
+                </div>
+                <div class="form-group col-sm-3">
+                    <label>Extension
+                    </label>
+                    {{form.ext(class="form-control")}}
+                </div>
+            </div>
+            <div class="row">
+            <div class="form-group col-sm-12">
+                
+                    <label>User Type (Current Customer Type: <span style="color:blue; font-size:20px;">{{customer_type}})</span>
+                    </label>
+                    {{form.custtype(class="form-control",required=required)}}
+                </div>
+            </div>
+            <button class="btn btn-lg btn-primary btn-block btn-signin" type="submit">Update</button>
+    </form>
+    <br>
+    <a href="/administration/properties">Cancel</a>
+    </div>
+    <!-- /form -->
+    <!-- /container -->
+    {% endblock %}

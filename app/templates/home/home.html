@@ -1,0 +1,15 @@
+{% extends "main.html" %} {% set active_page = "index" %} {% block content %}
+<style>
+        .row{
+                padding:20px;
+        }
+</style>
+
+
+
+<div class="container">
+{{content|safe}}
+
+</div>
+
+{% endblock %}

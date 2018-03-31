@@ -1,0 +1,71 @@
+{% extends "main.html" %} {% set active_page = "event-request" %} {% block content %}
+<link rel="stylesheet" href="../../static/css/form.css">
+
+
+<link href="https://fonts.googleapis.com/css?family=Raleway" rel="stylesheet">
+<style>
+</style>
+<script>
+</script>
+
+<div class="form col-sm-7">
+    <form id="regForm" method="POST">
+        {{ form.csrf_token }}
+
+            <div class="form-group">
+                    <label>Location
+                        <small style="color:red;"> (required)</small>
+                    </label>
+                    {{form.location(class="form-control" ,style="height:45px; font-size:14px; ",required=required)}} </div>
+                    <div class="form-group">
+                            <label>Event Type
+                                <small style="color:red;"> (required)</small>
+                            </label>
+                            {{form.event_type(class="form-control" ,style="height:45px; font-size:14px; ",required=required)}} </div>
+                            <script>
+                                    $('#def').prop('readonly', true);
+                                    document.getElementById("location").options[0].disabled = true;
+                                    document.getElementById("event_type").options[0].disabled = true;
+
+                        
+                                    $('#regForm').on('submit', function () {
+                                        var loc = document.getElementById("location");
+                                        var typ= document.getElementById("event_type");
+
+                                        var location = loc.options[loc.selectedIndex].value;
+                                        var type = typ.options[typ.selectedIndex].value;
+
+                                        if (location != 0 && type != 0) {
+                                            return true;
+                                        }
+                                        else if (location == 0) {
+                                            alert('You must select a Location')
+                                            return false;
+                                        }  
+                                        else {
+                                            alert('You must select an Event Type')
+                                            return false;
+                                        }
+                                    });
+                                </script>
+        <div class="form-group">
+            <label>Comments (What type of event are you interested in, etc)
+                <small style="color:red;"> (required)</small>
+            </label>
+            {{form.description(class="form-control",required=required)}} </div>
+            
+
+
+
+
+        {{form.submit(class="btn btn-primary btn-block")}}
+    </form>
+</div>
+<div class="col-sm-5 right-nav">
+    <div style="margin-top:20px; margin-bottom:20px;">
+     {{content|safe}}
+    </div>
+</div>
+
+
+{% endblock %}

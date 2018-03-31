@@ -1,0 +1,74 @@
+{% extends "main.html" %} {% set active_page = "maintenance" %} {% block content %}
+<link rel="stylesheet" href="../../static/css/form.css">
+
+
+<link href="https://fonts.googleapis.com/css?family=Raleway" rel="stylesheet">
+<style>
+</style>
+<script>
+</script>
+
+<div class="form col-sm-7">
+    <form id="regForm" method='POST'>
+        {{ form.csrf_token }}
+
+
+        <div class="form-group">
+
+            <style>
+                .select option:first-child {
+                    display: none;
+                }
+            </style> {% with messages = get_flashed_messages() %} {% if messages %}
+            <ul class=flashes>
+                {% for message in messages %}
+
+
+                <div class="alert alert-danger alert-dismissable" style="text-align:center; position:absolute;">
+                    <button type="button" class="close" data-dismiss="alert">&times;</button>
+
+                    <strong>{{message}}!</strong>
+                </div>
+
+                <br> {% endfor %}
+            </ul>
+            {% endif %} {% endwith %}
+            <label>Location
+                <small style="color:red;"> (required)</small>
+            </label>
+            {{form.location(class="form-control" ,style="height:45px; font-size:14px; ",required=required)}} </div>
+
+        <script>
+            $('#def').prop('readonly', true);
+            document.getElementById("location").options[0].disabled = true;
+
+            $('#regForm').on('submit', function () {
+                var x = document.getElementById("location");
+                var strUser = x.options[x.selectedIndex].value;
+                if (strUser != 0) {
+                    return true;
+                }
+                else {
+                    alert('You must select a Location')
+                    return false;
+                }
+            });
+        </script>
+        <div class="form-group">
+            <label>What happened?
+                <small style="color:red;"> (required)</small>
+            </label>
+            {{form.description(class="form-control",required=required)}} </div>
+        {{form.submit(class="btn btn-primary btn-block")}}
+    </form>
+</div>
+<div class="col-sm-5 right-nav">
+    <div style="margin-top:10px;margin-bottom:20px;">
+            {{content|safe}}
+            
+
+    </div>
+</div>
+
+
+{% endblock %}

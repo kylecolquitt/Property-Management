@@ -1,0 +1,25 @@
+{% extends "main.html" %} {% set active_page = "administration" %} {% block content %}
+<link rel="stylesheet" href="./app/static/css/form.css">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+
+
+<link href="https://fonts.googleapis.com/css?family=Raleway" rel="stylesheet">
+<div style="margin-right:auto; margin-left:auto;">
+        <form id="regForm" method="POST">
+          {{ form.csrf_token }}
+
+          <div class="form-group">
+            <label>Currently scheduled for:
+                 <h2>{{date}}</h2>
+                
+            </label>
+            {{form.dateofwork(class="form-control",required=required)}}
+          </div>
+
+          {{form.submit(class="btn btn-primary btn-block")}}
+        </form>
+    </div>
+
+
+
+{% endblock %}

@@ -1,0 +1,112 @@
+{% extends "main.html" %} {% set active_page = "administration" %} {% block content %}
+<link rel="stylesheet" href="../../static/css/form.css">
+
+
+<link href="https://fonts.googleapis.com/css?family=Raleway" rel="stylesheet">
+<style>
+</style>
+<script>
+</script>
+
+<div class="tables">
+    <h1 style="float:left;">Manage Administrators</h1>
+    <a href="/administration/manageCustomers" style="float:right; margin-top:10px;">Manage Customers <i class="fa fa-arrow-circle-right"></i></a>
+    
+  <table class="table" id="table">
+    <thead>
+      <tr>
+        <th>#</th>
+        <th>First Name</th>
+        <th>Last Name</th>
+        <th>Email</th>
+        <th>User Type</th>
+        <th></th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for row in admin %}
+      <tr>
+        <td>{{row['ID']}}</td>
+        <td>{{row['FirstName']}}</td>
+        <td>{{row['LastName']}}</td>
+        <td>{{row['Email']}}</td>
+        <td>{{row['User_Type']}}</td>        
+        <td>
+          <a href="/administration/editPerson{{row['ID']}}">Edit</a>
+        </td>
+       
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+  <script>
+  $(document).ready( function () {
+    $('#table').DataTable();
+} );</script>
+</div>
+</div>
+<div class="tables">
+  <h1 style="float:left;">Default Email Recipients</h1><br><br><br>
+  <h5>These are the addresses that will recieve emails when a customer/tenant submits a request.</h5>
+  
+<table class="table" id="table2" >
+  <thead>
+    <tr>
+      <TH>#</TH>
+      <th>Email</th>
+
+      <th> <button class="btn" data-toggle="modal" data-target="#email-modal">Add Email</button>
+      </th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for row in email %}
+    <tr>
+      <td>{{row[0]}}</td>
+      <td>{{row[1]}}</td>
+      
+      <td>
+        <a href="/administration/deleteEmail/{{row[0]}}">Delete</a>
+      </td>
+     
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+<script>
+$(document).ready( function () {
+  $('#table2').DataTable({searching: false});
+} );</script>
+</div>
+</div>
+
+
+<div class="modal fade" id="email-modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Add Email Address to recieve emails</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+
+        <form id="regForm2" method="POST">
+          {{ form.csrf_token }}
+  <label>Email Address</label>
+          <div class="form-group">
+            {{form.email(class="form-control", required=required)}}
+          </div>
+
+          {{form.submit(class="btn btn-primary btn-block")}}
+        </form>
+
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-primary" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}
