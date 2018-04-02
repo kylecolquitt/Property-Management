@@ -1,7 +1,7 @@
 # Property-Management Web App
 This is a web app developed for a local company that owns and rents commercial and residential properties.
 
-The app can be viewed <a target="_blank" href = "https://bradshaw-enterprises.herokuapp.com/">here</a>.
+The app can be viewed <a href = "https://bradshaw-enterprises.herokuapp.com/"  target="_blank">here</a>.
 
 Admin Login:<br>
 &nbsp;&nbsp;&nbsp;  Username: admin@admin.com<br>
