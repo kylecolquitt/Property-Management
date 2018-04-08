@@ -104,7 +104,7 @@ def forgotPassword():
             # get content to be sent in the forgot password email. The content is configurable.
             # the link is not configurable
             email = Content()
-            x=email.getContent('password')
+            x=email.getContentById('password')
 
             # send url with token in an email for user to access the password page
             # create url with the person id and random generated token.

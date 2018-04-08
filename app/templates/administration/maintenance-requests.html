@@ -4,6 +4,23 @@
 
 <link href="https://fonts.googleapis.com/css?family=Raleway" rel="stylesheet">
 
+<script>
+    {%if x == None or x == 'null' %}
+    console.log('TRUE')
+    {%else%}
+    $.ajax({
+      url: "https://testing2345343.herokuapp.com/google/event",
+      type: "POST",
+      data: {{x|tojson|safe}},
+      dataType: "json",
+      contentType: "application/json"
+    })
+      .done(function (data) {
+        console.log("Response " + JSON.stringify(data));
+      })
+    {%endif %}
+  
+  </script>
 
 <script>
   function sendId(id) {
@@ -11,7 +28,7 @@
     $(".modal-body .id-field").val(id);
   }
 </script>
-
+{{x}}
 
 
 

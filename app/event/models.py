@@ -1,6 +1,7 @@
 from app import app,DB
 import pymysql
-from flask import session
+from flask import session,redirect,url_for
+from app.google.views import create
 
 #this class handles the administration and submitting of a private event request
 class Event:
@@ -47,7 +48,7 @@ class Event:
             #try to insert new form data
             conn = pymysql.connect(host=DB[0], user=DB[1], passwd=DB[2], db=DB[3],autocommit=True)
             con = conn.cursor()
-            con.execute("INSERT INTO EVENTS (PropId, CustomerId, DateOfEvent, description, EventType) VALUES (%s,%s,%s,%s,%s)" , (form.location.data, session['person_id'], '10/10/2010', form.description.data, form.event_type.data))
+            con.execute("INSERT INTO events (PropId, CustomerId, DateOfEvent, description, EventType) VALUES (%s,%s,%s,%s,%s)" , (form.location.data, session['person_id'], '10/10/2010', form.description.data, form.event_type.data))
             con.close()
         except:
             print('Failure when creating event request')
@@ -55,16 +56,46 @@ class Event:
 
     #function to add event data from admin page. This adds the receipt, invoice and dateofwork to the existing row
     def addInvRec(self,form):
+        event = None
         try:
             #try to insert new form data entered on manage event request page
             conn = pymysql.connect(host=DB[0], user=DB[1], passwd=DB[2], db=DB[3],autocommit=True)
             con = conn.cursor()
-            con.execute("UPDATE EVENTS SET InvoiceNumber=%s, ReceiptNumber=%s, DateOfEvent=%s WHERE EventID = %s", (form.invoice.data, form.receipt.data,form.eventdate.data, form.id.data))
+            con.execute("select * from event_management WHERE EventID = %s", (form.id.data))
+            event = con.fetchone()
+            con.execute("UPDATE events SET InvoiceNumber=%s, ReceiptNumber=%s, DateOfEvent=%s WHERE EventID = %s", (form.invoice.data if form.invoice.data != '' else event[9], form.receipt.data if form.receipt.data != '' else event[10],form.eventdate.data if form.eventdate.data is not None else event[8], form.id.data))
+
             con.close()
 
         except:
             print('Failed to add invoice and receipt information.')
-        return None
+
+        if form.eventdate.data != None:
+            event_id = 'bradsha' + str(event[0])
+            calendar_event = {
+                'summary': event[5],
+                'id': event_id,
+                'location': event[5],
+                'description': 'Requester: ' + event[1] + ' ' + event[2] +'<br>'+ event[3] +'<br>' + event[4] + '<br>Event Type:' + event[7] + '<br><br>Comments:<br>' + event[11] ,
+                'start': {
+                    'date': str(form.eventdate.data if form.eventdate.data != '' else event[8]),
+                },
+                'end': {
+                    'date': str(form.eventdate.data if form.eventdate.data != '' else event[8]),
+                },
+
+                'reminders': {
+                    'useDefault': False,
+                    'overrides': [
+                    {'method': 'email', 'minutes': 24 * 60},
+                    {'method': 'popup', 'minutes': 10},
+                    ],
+                },
+                }
+        else:
+            calendar_event =None
+
+        return calendar_event
 
 
 #get all properties for use in the form dropdowns.
@@ -74,7 +105,7 @@ def getProperties():
         con = conn.cursor()
 
         #get all properties
-        con.execute("SELECT * FROM PROPERTY")
+        con.execute("SELECT * FROM property")
         p = con.fetchall()
         property_list=[]
         
@@ -97,7 +128,7 @@ def getEventType():
         con = conn.cursor()
 
         #get all event types
-        con.execute("SELECT * FROM Event_type ")
+        con.execute("SELECT * FROM event_type ")
         event_list=[]
         c = con.fetchall()
 

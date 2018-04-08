@@ -2,7 +2,8 @@ from app import app,DB
 import pymysql
 from flask import render_template, redirect,url_for,session,Blueprint
 from app.admin.models import Content
-import html
+import html, json
+
 home = Blueprint('home', __name__, url_prefix='/')
 
 @home.route('/')

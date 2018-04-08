@@ -36,12 +36,14 @@ class Maintenance:
             #try to insert new form data
             conn = pymysql.connect(host=DB[0], user=DB[1], passwd=DB[2], db=DB[3],autocommit=True)
             con = conn.cursor()
-            con.execute("INSERT INTO MAINTENANCE_REQUESTS (PropertyId, CustomerId, WorkDescription) VALUES (%s, %s,%s)" , (form.location.data, session['person_id'], form.description.data))
+            con.execute("INSERT INTO maintenance_requests (PropertyId, CustomerId, WorkDescription) VALUES (%s, %s,%s)" , (form.location.data, session['person_id'], form.description.data))
             con.close()
 
         except:
             print('Failure when trying to add maintenance request.')
         return None
+
+    
 
     #once an admin has completed a maintenance request, mark the request completed. This function also handled
     #undoing mark complete do the request shows as in progress.
@@ -61,7 +63,7 @@ class Maintenance:
 
             conn = pymysql.connect(host=DB[0], user=DB[1], passwd=DB[2], db=DB[3],autocommit=True)
             con = conn.cursor()
-            sql = "UPDATE MAINTENANCE_REQUESTS SET COMPLETE = %s WHERE MaitEventId = %s" 
+            sql = "UPDATE maintenance_requests SET COMPLETE = %s WHERE MaitEventId = %s" 
             con.execute(sql, (complete,maintenance_id))
             con.close()
 
@@ -76,12 +78,40 @@ class Maintenance:
             #try to insert update date of work
             conn = pymysql.connect(host=DB[0], user=DB[1], passwd=DB[2], db=DB[3],autocommit=True)
             con = conn.cursor()
-            con.execute("UPDATE MAINTENANCE_REQUESTS SET DateOfWork=%s WHERE MaitEventId = %s", (form.dateofwork.data, form.id.data))
+            con.execute("select * from manage_maintenance WHERE MaitEventId = %s", (form.id.data))
+            event = con.fetchone()
+            con.execute("UPDATE maintenance_requests SET DateOfWork=%s WHERE MaitEventId = %s", (form.dateofwork.data, form.id.data))
             con.close()
 
         except:
             print('Failed to Schedule Maintenance')
-        return None
+
+        if form.dateofwork.data != None:
+            event_id = 'bradshamain' + str(event[0])
+            calendar_event = {
+                'summary': 'Scheduled Maintenance: ' + event[5],
+                'id': event_id,
+                'location': event[5],
+                'description': 'Renter: ' + event[1] + ' ' + event[2] +'<br>'+ event[3] +'<br>' + event[4] + '<br><br>Work Description:<br>' + event[6] ,
+                'start': {
+                    'date': str(form.dateofwork.data if form.dateofwork.data != '' else event[8]),
+                },
+                'end': {
+                    'date': str(form.dateofwork.data if form.dateofwork.data != '' else event[8]),
+                },
+
+                'reminders': {
+                    'useDefault': False,
+                    'overrides': [
+                    {'method': 'email', 'minutes': 24 * 60},
+                    {'method': 'popup', 'minutes': 10},
+                    ],
+                },
+                }
+        else:
+            calendar_event =None
+
+        return calendar_event
 
 #Used for forms
 #load all properties from database for use in dropdowns.
@@ -90,7 +120,7 @@ def getProperties():
         conn = pymysql.connect(host=DB[0], user=DB[1], passwd=DB[2], db=DB[3],autocommit=True)
         con = conn.cursor()
         #get all properties
-        con.execute("SELECT * FROM PROPERTY")
+        con.execute("SELECT * FROM property")
 
         p = con.fetchall()
         property_list=[]
@@ -106,3 +136,5 @@ def getProperties():
         con.close()
         
         return property_list
+
+      

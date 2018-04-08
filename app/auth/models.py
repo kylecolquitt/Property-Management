@@ -14,7 +14,7 @@ class User:
         con = conn.cursor()
 
         #select all users with a user type of Administrator
-        con.execute("SELECT * FROM CUSTOMER WHERE CUSTYPE=3")
+        con.execute("SELECT * FROM customer WHERE CUSTYPE=3")
         user = con.fetchall()
 
         #create a list
@@ -34,7 +34,7 @@ class User:
         con = conn.cursor()
         
         #get user credentials where email = submitted email
-        con.execute("SELECT * FROM CUSTOMER where Email = %s", (form.email.data))
+        con.execute("SELECT * FROM customer where Email = %s", (form.email.data))
         user = con.fetchone()
         #if the hashed password matches the submitted password
         if bcrypt.check_password_hash(user[12], form.password.data):
@@ -58,7 +58,7 @@ class User:
         con = conn.cursor()
 
         #check to see if email exists in the system
-        con.execute("SELECT * FROM CUSTOMER where Email = %s", (email))
+        con.execute("SELECT * FROM customer where Email = %s", (email))
         user = con.fetchall()
 
         # if email exists
@@ -78,7 +78,7 @@ class User:
         con = conn.cursor()
 
         #get user by email
-        con.execute("SELECT * FROM CUSTOMER where Email = %s", (form.email.data))
+        con.execute("SELECT * FROM customer where Email = %s", (form.email.data))
         user = con.fetchone()
         return user
 
@@ -91,7 +91,7 @@ class User:
             conn = pymysql.connect(host=DB[0], user=DB[1], passwd=DB[2], db=DB[3],autocommit=True)
             con = conn.cursor()
             #insert form values
-            con.execute("INSERT INTO CUSTOMER (FirstName, LastName, Organization, Address, City, State,Zip,Email,Phone,Extension,Password) VALUES (%s, %s,%s,%s, %s,%s,%s, %s,%s,%s, %s)" , (form.first_name.data, form.last_name.data,form.organization.data,form.address.data,form.city.data,form.state.data,form.zip.data,form.email.data,form.phone.data,form.ext.data, bcrypt.generate_password_hash(form.password.data)))
+            con.execute("INSERT INTO customer (FirstName, LastName, Organization, Address, City, State,Zip,Email,Phone,Extension,Password) VALUES (%s, %s,%s,%s, %s,%s,%s, %s,%s,%s, %s)" , (form.first_name.data, form.last_name.data,form.organization.data,form.address.data,form.city.data,form.state.data,form.zip.data,form.email.data,form.phone.data,form.ext.data, bcrypt.generate_password_hash(form.password.data)))
             con.close()
         except:
             print('failure when adding new user')
@@ -109,7 +109,7 @@ class User:
             #connect
             conn = pymysql.connect(host=DB[0], user=DB[1], passwd=DB[2], db=DB[3],autocommit=True)
             con = conn.cursor()
-            con.execute("INSERT INTO FORGOT_PASSWORD (PersonId, CreateDate, Token) VALUES (%s, %s,%s)" , (person_id, datetime.datetime.now(), bcrypt.generate_password_hash(token)))
+            con.execute("INSERT INTO forgot_password (PersonId, CreateDate, Token) VALUES (%s, %s,%s)" , (person_id, datetime.datetime.now(), bcrypt.generate_password_hash(token)))
             con.close()
 
         except:
@@ -128,7 +128,7 @@ class User:
             conn = pymysql.connect(host=DB[0], user=DB[1], passwd=DB[2], db=DB[3],autocommit=True)
             con = conn.cursor()
 
-            con.execute("SELECT * FROM FORGOT_PASSWORD WHERE PersonId = %s" , (person_id))
+            con.execute("SELECT * FROM forgot_password WHERE PersonId = %s" , (person_id))
             hashed_token = con.fetchone()
 
             #token expires in 3 hours. get current time minus 3 hours and compare
@@ -166,7 +166,7 @@ class User:
             con = conn.cursor()
 
             #delete token asociated with person id
-            con.execute("DELETE FROM FORGOT_PASSWORD WHERE PersonId = %s" , (person_id))
+            con.execute("DELETE FROM forgot_password WHERE PersonId = %s" , (person_id))
             con.close()
 
         except:
@@ -183,7 +183,7 @@ class User:
             con = conn.cursor()
 
             #update user in database with new hashed password
-            con.execute("UPDATE CUSTOMER SET PASSWORD=%s WHERE CUSTOMERID = %s" , (bcrypt.generate_password_hash(password), person_id ))
+            con.execute("UPDATE customer SET PASSWORD=%s WHERE CUSTOMERID = %s" , (bcrypt.generate_password_hash(password), person_id ))
             con.close()
 
             #delete token from database

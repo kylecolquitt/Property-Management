@@ -13,7 +13,7 @@ class Admin:
         conn = pymysql.connect(host=DB[0], user=DB[1], passwd=DB[2], db=DB[3],autocommit=True)
         con = conn.cursor()
         #get all admins
-        con.execute("SELECT * FROM Customer join Customer_Type on Customer.CustType=Customer_Type.CustType WHERE customer.CUSTTYPE=3")
+        con.execute("SELECT * FROM customer join Customer_Type on Customer.CustType=Customer_Type.CustType WHERE customer.CUSTTYPE=3")
         user = con.fetchall()
         admins=[]
         #create a list of dictionaries so admin information can be used in system
@@ -29,7 +29,7 @@ class Admin:
         conn = pymysql.connect(host=DB[0], user=DB[1], passwd=DB[2], db=DB[3],autocommit=True)
         con = conn.cursor()
         #get all admins
-        con.execute("SELECT * FROM Customer join Customer_Type on Customer.CustType=Customer_Type.CustType WHERE customer.CUSTTYPE!=3")
+        con.execute("SELECT * FROM customer join Customer_Type on Customer.CustType=Customer_Type.CustType WHERE customer.CUSTTYPE!=3")
         user = con.fetchall()
         admins=[]
         #create a list of dictionaries so admin information can be used in system
@@ -101,7 +101,7 @@ class Admin:
             conn = pymysql.connect(host=DB[0], user=DB[1], passwd=DB[2], db=DB[3],autocommit=True)
             con = conn.cursor()
             if form.custtype.data == 0:
-                con.execute("UPDATE Customer SET FirstName=%s, LastName=%s, Organization=%s,Address=%s,City=%s, State=%s, Zip=%s, Email=%s, Phone=%s, Extension=%s WHERE CustomerId = %s", (form.first_name.data,form.last_name.data, form.organization.data,form.address.data,form.city.data, form.state.data,form.zip.data,form.email.data, form.phone.data,form.ext.data, person_id))
+                con.execute("UPDATE customer SET FirstName=%s, LastName=%s, Organization=%s,Address=%s,City=%s, State=%s, Zip=%s, Email=%s, Phone=%s, Extension=%s WHERE CustomerId = %s", (form.first_name.data,form.last_name.data, form.organization.data,form.address.data,form.city.data, form.state.data,form.zip.data,form.email.data, form.phone.data,form.ext.data, person_id))
             else:
                 con.execute("UPDATE Customer SET FirstName=%s, LastName=%s, Organization=%s,Address=%s,City=%s, State=%s, Zip=%s, Email=%s, Phone=%s, Extension=%s, CustType=%s WHERE CustomerId = %s", (form.first_name.data,form.last_name.data, form.organization.data,form.address.data,form.city.data, form.state.data,form.zip.data,form.email.data, form.phone.data,form.ext.data, form.custtype.data, person_id))
             con.close()
@@ -165,7 +165,7 @@ class Property:
         conn = pymysql.connect(host=DB[0], user=DB[1], passwd=DB[2], db=DB[3],autocommit=True)
         con = conn.cursor()
         #get all properties
-        con.execute("SELECT * FROM PROPERTY")
+        con.execute("SELECT * FROM property")
 
         p = con.fetchall()
         property_list=[]
@@ -182,7 +182,7 @@ class Property:
             #try to insert new form data
             conn = pymysql.connect(host=DB[0], user=DB[1], passwd=DB[2], db=DB[3],autocommit=True)
             con = conn.cursor()
-            con.execute("INSERT INTO PROPERTY (Description, Address, City, State, Zip, Type) VALUES (%s, %s,%s,%s, %s,%s)" , (form.description.data, form.address.data, form.city.data, form.state.data, form.zip.data, form.p_type.data))
+            con.execute("INSERT INTO property (Description, Address, City, State, Zip, Type) VALUES (%s, %s,%s,%s, %s,%s)" , (form.description.data, form.address.data, form.city.data, form.state.data, form.zip.data, form.p_type.data))
             con.close()
 
         except:
@@ -195,7 +195,7 @@ class Property:
             #try to insert new form data
             conn = pymysql.connect(host=DB[0], user=DB[1], passwd=DB[2], db=DB[3],autocommit=True)
             con = conn.cursor()
-            con.execute("UPDATE PROPERTY SET Description=%s, Address=%s, City=%s, State=%s, Zip=%s, Type=%s WHERE PropertyID = %s", (form.description.data, form.address.data, form.city.data, form.state.data, form.zip.data, form.p_type.data, property_id))
+            con.execute("UPDATE property SET Description=%s, Address=%s, City=%s, State=%s, Zip=%s, Type=%s WHERE PropertyID = %s", (form.description.data, form.address.data, form.city.data, form.state.data, form.zip.data, form.p_type.data, property_id))
             con.close()
 
         except:
@@ -209,7 +209,7 @@ class Property:
         conn = pymysql.connect(host=DB[0], user=DB[1], passwd=DB[2], db=DB[3],autocommit=True)
         con = conn.cursor()
         #get user
-        con.execute("SELECT * FROM PROPERTY WHERE PropertyId = %s", property_id )
+        con.execute("SELECT * FROM property WHERE PropertyId = %s", property_id )
         user = con.fetchone()
         con.close()
 
@@ -273,7 +273,7 @@ class Content():
             #try to insert new form data
             conn = pymysql.connect(host=DB[0], user=DB[1], passwd=DB[2], db=DB[3],autocommit=True)
             con = conn.cursor()
-            con.execute("UPDATE CONFIG SET `text`=%s, `subject`=%s WHERE `key` = %s", (html.escape(form.content.data), html.escape(form.subject.data), form.key.data))
+            con.execute("UPDATE config SET `text`=%s, `subject`=%s WHERE `key` = %s", (html.escape(form.content.data), html.escape(form.subject.data), form.key.data))
             con.close()
         except:
             print('Failed to update config')
@@ -296,7 +296,7 @@ def getCustomerType():
         #connect
         conn = pymysql.connect(host=DB[0], user=DB[1], passwd=DB[2], db=DB[3],autocommit=True)
         con = conn.cursor()
-        con.execute("SELECT * FROM Customer_Type")
+        con.execute("SELECT * FROM customer_type")
 
         c = con.fetchall()
         customer_type_list=[]
@@ -314,7 +314,7 @@ def getCustomerTypeBId(person_id):
         conn = pymysql.connect(host=DB[0], user=DB[1], passwd=DB[2], db=DB[3],autocommit=True)
         con = conn.cursor()
         #get all admins
-        con.execute("SELECT Type FROM Customer_type  WHERE CustType in (SELECT CustType from Customer WHERE CustomerID = %s)",(person_id))
+        con.execute("SELECT Type FROM customer_type  WHERE CustType in (SELECT CustType from customer WHERE CustomerID = %s)",(person_id))
 
         c = con.fetchone()
 
