@@ -102,7 +102,7 @@ uritemplate==3.0.0
 urllib3==1.22
 virtualenv==15.1.0
 virtualenv-clone==0.2.6
-Werkzeug==0.12.2
+Werkzeug==0.15.3
 Whoosh==2.7.4
 wrapt==1.10.10
 WTForms==2.1
