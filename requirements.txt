@@ -89,7 +89,7 @@ pytz==2017.2
 requests==2.18.4
 requests-oauthlib==0.8.0
 rethinkdb==2.3.0.post6
-rsa==3.4.2
+rsa==4.1
 six==1.11.0
 smartystreets.py==0.4.0
 SQLAlchemy==1.1.11
