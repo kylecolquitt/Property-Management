@@ -5,7 +5,7 @@ Babel==2.4.0
 bcrypt==3.1.4
 beautifulsoup4==4.6.0
 blinker==1.4
-bottle==0.12.13
+bottle==0.12.19
 certifi==2017.7.27.1
 cffi==1.11.4
 chardet==3.0.4
